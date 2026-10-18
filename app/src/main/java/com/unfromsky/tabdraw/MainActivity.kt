@@ -134,8 +134,8 @@ class MainActivity : AppCompatActivity() {
         webView.webChromeClient = WebChromeClient()
 
         // Enable airborne stylus hover events to be received without restriction
-        webView.setOnHoverListener { _, event ->
-            webView.onGenericMotionEvent(event)
+        webView.setOnHoverListener { v, event ->
+            v.dispatchGenericMotionEvent(event)
         }
     }
 
