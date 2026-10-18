@@ -52,33 +52,33 @@
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:text="@string/connect"
-            android:backgroundTint="@color/purple_primary"
+            android:background="#FF7C3AED"
             android:textColor="@color/white"
             android:layout_marginStart="12dp" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btnCloseBar"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="@color/white"
-            android:contentDescription="Close"
+            android:background="#33FFFFFF"
+            android:text="✕"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
     <!-- Floating subtle gear button on top-right corner to toggle IP config -->
-    <ImageButton
+    <Button
         android:id="@+id/btnSettings"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="top|end"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="#22FFFFFF"
-        android:src="@android:drawable/ic_menu_preferences"
-        android:tint="#88FFFFFF"
-        android:alpha="0.4"
-        android:contentDescription="@string/settings" />
+        android:text="⚙"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:alpha="0.4" />
 
 </FrameLayout>

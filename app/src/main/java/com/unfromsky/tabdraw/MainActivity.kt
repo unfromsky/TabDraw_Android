@@ -19,7 +19,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,8 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var ipConfigBar: LinearLayout
     private lateinit var etHostUrl: EditText
     private lateinit var btnConnect: Button
-    private lateinit var btnCloseBar: ImageButton
-    private lateinit var btnSettings: ImageButton
+    private lateinit var btnCloseBar: Button
+    private lateinit var btnSettings: Button
 
     private lateinit var prefs: SharedPreferences
 
