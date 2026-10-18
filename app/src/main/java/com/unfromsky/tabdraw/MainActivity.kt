@@ -154,19 +154,19 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             try {
                 window.setFrameRate(120f, Surface.FRAME_RATE_COMPATIBILITY_DEFAULT)
-            } catch (_: Exception) {}
+            } catch (e: Exception) {}
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val targetDisplay = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     display
                 } else {
                     @Suppress("DEPRECATION")
                     windowManager.defaultDisplay
                 }
 
-                val modes = display?.supportedModes
+                val modes = targetDisplay?.supportedModes
                 val highHzMode = modes?.filter { it.refreshRate >= 119f }?.maxByOrNull { it.refreshRate }
                 if (highHzMode != null) {
                     val params = window.attributes
@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                     params.preferredRefreshRate = 120f
                     window.attributes = params
                 }
-            } catch (_: Exception) {}
+            } catch (e: Exception) {}
         }
     }
 
