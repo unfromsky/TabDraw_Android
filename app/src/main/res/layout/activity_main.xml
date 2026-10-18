@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <!-- Fullscreen Hardware-Accelerated WebView for Canvas -->
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black" />
+
+    <!-- Top floating bar for connection config (hidden once connected) -->
+    <LinearLayout
+        android:id="@+id/ipConfigBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#DD0E0C16"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🎨 TabDraw"
+            android:textColor="@color/purple_accent"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginEnd="16dp" />
+
+        <EditText
+            android:id="@+id/etHostUrl"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="#33FFFFFF"
+            android:textColor="@color/white"
+            android:textColorHint="#88FFFFFF"
+            android:hint="@string/ip_hint"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textSize="14sp"
+            android:inputType="textUri"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/btnConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="@string/connect"
+            android:backgroundTint="@color/purple_primary"
+            android:textColor="@color/white"
+            android:layout_marginStart="12dp" />
+
+        <ImageButton
+            android:id="@+id/btnCloseBar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@color/white"
+            android:contentDescription="Close"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- Floating subtle gear button on top-right corner to toggle IP config -->
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#22FFFFFF"
+        android:src="@android:drawable/ic_menu_preferences"
+        android:tint="#88FFFFFF"
+        android:alpha="0.4"
+        android:contentDescription="@string/settings" />
+
+</FrameLayout>

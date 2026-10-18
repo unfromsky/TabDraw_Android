@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.TabDraw.Fullscreen" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">@color/black</item>
+    </style>
+</resources>

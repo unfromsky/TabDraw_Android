@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TabDraw 繪圖板</string>
+    <string name="connect">連線</string>
+    <string name="ip_hint">請輸入電腦 IP (如 192.168.0.13:3000)</string>
+    <string name="settings">連線設定</string>
+</resources>
