@@ -26,35 +26,25 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      id: gradle_build
-      run: |
-        ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee build.log
-      continue-on-error: true
+      run: ./gradlew assembleDebug --stacktrace --no-daemon
 
-    - name: Output Build Log to Summary
-      if: always()
+    - name: List Generated APK Files
       run: |
-        echo "## 📋 Gradle Build Output" >> $GITHUB_STEP_SUMMARY
-        echo '```text' >> $GITHUB_STEP_SUMMARY
-        tail -n 150 build.log >> $GITHUB_STEP_SUMMARY || true
-        echo '```' >> $GITHUB_STEP_SUMMARY
-
-    - name: Check Build Result
-      if: steps.gradle_build.outcome == 'failure'
-      run: exit 1
+        echo "=== Locating built APK files ==="
+        find app/build/outputs/apk/ -type f -name "*.apk" || ls -laR app/build/outputs/
 
     - name: Upload APK to Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: TabDraw-Android-APK
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: app/build/outputs/apk/**/*.apk
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
       with:
-        tag_name: v1.0.0
-        name: "TabDraw 繪圖板 Android App v1.0.0"
+        tag_name: v1.0.${{ github.run_number }}
+        name: "TabDraw 繪圖板 Android App v1.0.${{ github.run_number }}"
         body: |
           ### 🎨 TabDraw 平板繪圖板 Android 專屬客戶端
 
@@ -63,6 +53,6 @@ jobs:
           - 🔄 **休眠喚醒自動重連**：平板熄滅再亮起立即無縫連線，不失效、不卡頓。
           - 🌐 **自由切換 IP**：支援自訂與記憶電腦端 IP（預設帶入 `192.168.0.13:3000`）。
           - 📺 **全螢幕沉浸式模式**：隱藏狀態列與虛擬導航列，螢幕常亮不中斷繪圖。
-        files: app/build/outputs/apk/debug/app-debug.apk
+        files: app/build/outputs/apk/**/*.apk
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

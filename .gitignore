@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+gradle_home/
+gradle-8.4-bin.zip
+
