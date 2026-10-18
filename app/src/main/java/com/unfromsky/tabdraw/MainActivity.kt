@@ -151,12 +151,6 @@ class MainActivity : AppCompatActivity() {
      * Force hardware 120Hz high refresh rate to prevent HyperOS 60Hz throttling
      */
     private fun forceHighRefreshRate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            try {
-                window.setFrameRate(120f, Surface.FRAME_RATE_COMPATIBILITY_DEFAULT)
-            } catch (e: Exception) {}
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 val targetDisplay = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
