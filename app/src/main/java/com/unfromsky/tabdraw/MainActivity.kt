@@ -140,11 +140,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         webView.webChromeClient = WebChromeClient()
-
-        // Enable airborne stylus hover events to be received without restriction
-        webView.setOnHoverListener { v, event ->
-            v.dispatchGenericMotionEvent(event)
-        }
     }
 
     private fun loadDrawingPad(url: String) {
@@ -232,13 +227,6 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    override fun onGenericMotionEvent(event: MotionEvent?): Boolean {
-        // Forward stylus hover motion directly
-        if (event != null && webView.dispatchGenericMotionEvent(event)) {
-            return true
-        }
-        return super.onGenericMotionEvent(event)
-    }
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
