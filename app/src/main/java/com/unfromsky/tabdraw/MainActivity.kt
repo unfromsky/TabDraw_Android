@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.Surface
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -43,22 +42,32 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Keep Screen On while drawing
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        try {
+            // Keep Screen On while drawing
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        setContentView(R.layout.activity_main)
+            setContentView(R.layout.activity_main)
 
-        prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-        initViews()
-        setupFullscreen()
+            initViews()
+            setupFullscreen()
+            setupWebView()
+
+            // Load saved or default URL
+            val savedUrl = prefs.getString(KEY_LAST_URL, DEFAULT_URL) ?: DEFAULT_URL
+            etHostUrl.setText(savedUrl)
+            loadDrawingPad(savedUrl)
+        } catch (e: Exception) {
+            Toast.makeText(this, "啟動異常: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        // Safely force 120Hz once window is attached to display
         forceHighRefreshRate()
-        setupWebView()
-
-        // Load saved or default URL
-        val savedUrl = prefs.getString(KEY_LAST_URL, DEFAULT_URL) ?: DEFAULT_URL
-        etHostUrl.setText(savedUrl)
-        loadDrawingPad(savedUrl)
+        hideSystemUI()
     }
 
     private fun initViews() {
@@ -148,12 +157,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Force hardware 120Hz high refresh rate to prevent HyperOS 60Hz throttling
+     * Force hardware 120Hz high refresh rate safely
      */
     private fun forceHighRefreshRate() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                val targetDisplay = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val targetDisplay = window.decorView.display ?: if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     display
                 } else {
                     @Suppress("DEPRECATION")
@@ -183,22 +192,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.let { controller ->
-                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.insetsController?.let { controller ->
+                    controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                    controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN
+                )
             }
-        } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN
-            )
-        }
+        } catch (e: Exception) {}
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
